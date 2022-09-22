@@ -1,0 +1,43 @@
+{
+  "name": "backend_gina_type_orm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc --watch",
+    "dev": "nodemon dist/server.js",
+    "start": "node dist/server.js",
+    "start2": "ts-node src/server.ts",
+    "dev2": "nodemon --exec ts-node src/server.ts",
+    "typeorm": "typeorm-ts-node-commonjs",
+    "typeorm_generate": "typeorm-ts-node-commonjs -d src/data-source.ts migration:generate",
+    "typeorm_run": "typeorm-ts-node-commonjs -d src/data-source.ts migration:run",
+    "typeorm_revert": "typeorm-ts-node-commonjs -d src/data-source.ts migration:revert",
+    "typeorm_show": "typeorm-ts-node-commonjs -d src/data-source.ts migration:show",
+    "typeorm_create": "typeorm-ts-node-commonjs migration:create"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/express": "^4.17.14",
+    "@types/jsonwebtoken": "^8.5.9",
+    "@types/node": "^17.0.17",
+    "@types/pg": "^8.6.4",
+    "bcrypt": "^5.0.1",
+    "crossenv": "0.0.2-security",
+    "dotenv": "^16.0.0",
+    "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
+    "pg": "^8.7.3",
+    "reflect-metadata": "^0.1.13",
+    "ts-node": "^10.9.1",
+    "tsc": "^2.0.4",
+    "typeorm": "^0.3.7",
+    "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
