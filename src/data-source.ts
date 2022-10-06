@@ -27,7 +27,7 @@ export const getDataSource = (): Promise<DataSource> => {
      return new Promise((resolve, reject) => {
         AppDataSource.initialize()
         .then(async () => {
-            console.log("se hizo una conexión nueva")
+            // console.log("se hizo una conexión nueva")
             resolve(AppDataSource);
         })
         .catch((error) => reject(error));

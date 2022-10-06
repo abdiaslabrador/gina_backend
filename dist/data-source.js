@@ -33,7 +33,7 @@ const getDataSource = () => {
     return new Promise((resolve, reject) => {
         exports.AppDataSource.initialize()
             .then(() => __awaiter(void 0, void 0, void 0, function* () {
-            console.log("se hizo una conexión nueva");
+            // console.log("se hizo una conexión nueva")
             resolve(exports.AppDataSource);
         }))
             .catch((error) => reject(error));
