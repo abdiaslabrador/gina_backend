@@ -18,7 +18,7 @@ function token_verify(req: Request, res: Response, next: NextFunction): void {
           } catch (error) {
             next({name:"JsonWebTokenError", msg: "token no valido" })       
           }
-          req.token = bearerToken
+          // req.token = bearerToken
           req.user = user.user
           return next(); //importante colocar el retun para hacer el cambio al otro middleware
 

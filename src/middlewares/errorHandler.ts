@@ -11,14 +11,14 @@ function handleErrors(
       let errors: any = []
       if( error["errors"] )
       { errors = error["errors"]}
-       res.status(403).json({ type: error.name, errors : errors  });
+       res.status(403).json({ errorName: error.name, errors : errors  });
     },
     JsonWebTokenError: (resp: Response) => {
       error["msg"] ? "" : (error["msg"] = "Error de token");
-       res.status(403).json({ type: error.name, msg: error["msg"] });
+       res.status(403).json({ errorName: error.name, msg: error["msg"] });
     },
     default: (resp: Response, ) => {
-      res.status(500).json({type: "500", msg: "Error en el servidor"});
+      res.status(500).json({errorName: "500", msg: "Error en el servidor"});
     },
   };
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { authentication, userAuthenticated } from "../controllers/authController";
+import { authentication, userAuthenticated, permitLogin } from "../controllers/authController";
 import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 
@@ -12,13 +12,12 @@ authRouter.get(
 
 authRouter.post(
   "/login",
-  [
-    check("email", "Error al escribir el email").isEmail(),
-    check("password", "Tienen que ser más de 6 caracteres").isLength({min:6}),
-  ],
   authentication
 );
 
-
+authRouter.get(
+  "/permitLogin",
+  permitLogin
+);
 
 export default authRouter;
