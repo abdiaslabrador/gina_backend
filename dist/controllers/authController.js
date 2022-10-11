@@ -17,8 +17,12 @@ const User_1 = require("../entities/User");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const data_source_1 = require("../data-source");
+const validators_1 = require("../helpers/validators");
 const { sign, decode, verify } = jsonwebtoken_1.default;
 const authentication = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const isNotValid = (0, validators_1.entriesValidatorHelper)(req);
+    if (isNotValid)
+        return next(isNotValid);
     const { email, password } = req.body;
     try {
         const userRepository = data_source_1.AppDataSource.getRepository(User_1.User);

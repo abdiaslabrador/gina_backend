@@ -11,7 +11,11 @@ authRouter.get(
 );
 
 authRouter.post(
-  "/login",
+  "/login",[
+    check("email", {message: "Email mal escrito"}).isEmail(),
+    check("password", {message: "Tiene que tener más de 6 caráteres"}).isLength({ min: 6 }),
+  ]
+  ,
   authentication
 );
 

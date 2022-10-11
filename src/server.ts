@@ -10,6 +10,7 @@ import { Photo } from "./entities/Photo";
 import {handleErrors} from './middlewares/errorHandler'
 import {token_verify} from './middlewares/token'
 import authRouter from './routers/authRouter'
+import { User } from "./entities/User";
 
 const PORT =  process.env.PORT || 4000
 const app = express();
@@ -25,7 +26,7 @@ const { sign, decode, verify } = jsonwebtoken;
 
 const main = async () => {
   const appDataSource = await getDataSource();
-
+ 
   app.get("/api/photos",  token_verify, async (req: Request, res: Response, next:NextFunction) => {
       
     try {

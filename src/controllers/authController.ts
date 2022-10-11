@@ -11,8 +11,10 @@ const { sign, decode, verify } = jsonwebtoken;
 
 
 const authentication = async (req: Request, res: Response, next:NextFunction) => {
-
+    const isNotValid = entriesValidatorHelper(req)
+    if(isNotValid) return next(isNotValid)
     const {email, password} = req.body
+
     try {
       const userRepository = AppDataSource.getRepository(User);
         const user = await userRepository
