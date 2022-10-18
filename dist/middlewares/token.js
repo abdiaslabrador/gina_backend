@@ -10,18 +10,16 @@ function token_verify(req, res, next) {
     /**
      * verficamos que el string que viene en el header sea un token
      */
-    let bearerToken;
     let user = {};
-    const bearerheader = req.headers['authorization'];
-    bearerToken = bearerheader ? bearerheader.split(" ")[1] : null;
-    if (bearerToken) {
+    const { token } = req.cookies;
+    if (token) {
         try {
-            user = verify(bearerToken, process.env.SECRETKEY);
+            user = verify(token, process.env.SECRETKEY);
         }
         catch (error) {
-            next({ name: "JsonWebTokenError", msg: "token no valido" });
+            res.clearCookie('token');
+            next({ name: "JsonWebTokenError", msg: "token no válido" });
         }
-        // req.token = bearerToken
         req.user = user.user;
         return next(); //importante colocar el retun para hacer el cambio al otro middleware
     }

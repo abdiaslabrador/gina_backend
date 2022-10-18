@@ -29,18 +29,13 @@ const authentication = async (req: Request, res: Response, next:NextFunction) =>
             let equal_pass = await bcrypt.compare(password, user.password)
             if(equal_pass){
               delete user.password
-              // let user_token = {
-              //   id : user.id,
-              //   name : user.name,
-              //   last_name: user.last_name,
-              //   birthday: user.birthday
-              // }
               const token:string = sign(
                 JSON.stringify({
-                    // user:user_token
                     user:user
                   }),
                 process.env.SECRETKEY)
+                res.cookie('token', token, {  httpOnly:true })
+                
                 return  res.status(200).json(token) 
               }
               else{
@@ -54,10 +49,8 @@ const authentication = async (req: Request, res: Response, next:NextFunction) =>
     }
     
   }
-
   
-
-const userAuthenticated = async (req: Request, res: Response, next:NextFunction) => {
+  const userAuthenticated = async (req: Request, res: Response, next:NextFunction) => {
     try {
         const userRepository = AppDataSource.getRepository(User);
         const user : UserInf = await userRepository
@@ -70,13 +63,28 @@ const userAuthenticated = async (req: Request, res: Response, next:NextFunction)
           return res.status(200).json(user)
         }
         else{
-          return res.status(401).json({errorName: 401, msg: "No untenticado"})  //contenido no encontrado
+          return res.status(403).json({errorName: 403, msg: "No untenticado"})  //No se encontrado el usuario pasado por las cookiess
         }
     } catch (error) {
       console.log(error)
       return next(error)
     }
   }
+
+const deleteTokenCookie = async (req: Request, res: Response, next:NextFunction) => {
+  try {
+    // res.cookie('token', '', { httpOnly:true})
+    // const {token}= req.cookies
+    // res.cookie('token', null, { path:'/', httpOnly:true, domain: 'localhost' })
+    // res.cookie('title', 'geeksforgeeks', { path:'/', httpOnly:true, domain: 'localhost' });
+    res.clearCookie("token");
+    // res.clearCookie('token');
+    return res.status(200).json("Cookie cleared") 
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
+}
 
   const permitLogin = async (req: Request, res: Response, next:NextFunction) => {
     try {
@@ -115,4 +123,5 @@ const userAuthenticated = async (req: Request, res: Response, next:NextFunction)
       return next(error)
     }
   }
-  export  {authentication, userAuthenticated, permitLogin}
+
+  export  {authentication, userAuthenticated, permitLogin, deleteTokenCookie}

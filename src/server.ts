@@ -11,15 +11,20 @@ import {handleErrors} from './middlewares/errorHandler'
 import {token_verify} from './middlewares/token'
 import authRouter from './routers/authRouter'
 import { User } from "./entities/User";
+import cookieParser from 'cookie-parser'
 
 const PORT =  process.env.PORT || 4000
 const app = express();
 //middleware
-app.use(cors())
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true,
+};
+app.use(cors(corsOptions))
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/auth', authRouter)
-
-const { sign, decode, verify } = jsonwebtoken;  
+// const { sign, decode, verify } = jsonwebtoken;  
 
 
 
@@ -27,7 +32,7 @@ const { sign, decode, verify } = jsonwebtoken;
 const main = async () => {
   const appDataSource = await getDataSource();
  
-  app.get("/api/photos",  token_verify, async (req: Request, res: Response, next:NextFunction) => {
+  app.get("/api/photos",   async (req: Request, res: Response, next:NextFunction) => {
       
     try {
       

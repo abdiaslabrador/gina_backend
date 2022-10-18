@@ -16,22 +16,26 @@ require("dotenv").config();
 const cors = require('cors');
 require("reflect-metadata");
 const express_1 = __importDefault(require("express"));
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const data_source_1 = require("./data-source");
 const Photo_1 = require("./entities/Photo");
 const errorHandler_1 = require("./middlewares/errorHandler");
-const token_1 = require("./middlewares/token");
 const authRouter_1 = __importDefault(require("./routers/authRouter"));
+const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const PORT = process.env.PORT || 4000;
 const app = (0, express_1.default)();
 //middleware
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000',
+    credentials: true,
+};
+app.use(cors(corsOptions));
 app.use(express_1.default.json());
+app.use((0, cookie_parser_1.default)());
 app.use('/api/auth', authRouter_1.default);
-const { sign, decode, verify } = jsonwebtoken_1.default;
+// const { sign, decode, verify } = jsonwebtoken;  
 const main = () => __awaiter(void 0, void 0, void 0, function* () {
     const appDataSource = yield (0, data_source_1.getDataSource)();
-    app.get("/api/photos", token_1.token_verify, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    app.get("/api/photos", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const photoRepository = data_source_1.AppDataSource.getRepository(Photo_1.Photo);
             const photos = yield photoRepository.createQueryBuilder("photos").getMany();

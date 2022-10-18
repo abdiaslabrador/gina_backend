@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.permitLogin = exports.userAuthenticated = exports.authentication = void 0;
+exports.deleteTokenCookie = exports.permitLogin = exports.userAuthenticated = exports.authentication = void 0;
 const User_1 = require("../entities/User");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -37,16 +37,10 @@ const authentication = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             let equal_pass = yield bcrypt_1.default.compare(password, user.password);
             if (equal_pass) {
                 delete user.password;
-                // let user_token = {
-                //   id : user.id,
-                //   name : user.name,
-                //   last_name: user.last_name,
-                //   birthday: user.birthday
-                // }
                 const token = sign(JSON.stringify({
-                    // user:user_token
                     user: user
                 }), process.env.SECRETKEY);
+                res.cookie('token', token, { httpOnly: true });
                 return res.status(200).json(token);
             }
             else {
@@ -75,7 +69,7 @@ const userAuthenticated = (req, res, next) => __awaiter(void 0, void 0, void 0, 
             return res.status(200).json(user);
         }
         else {
-            return res.status(401).json({ errorName: 401, msg: "No untenticado" }); //contenido no encontrado
+            return res.status(403).json({ errorName: 403, msg: "No untenticado" }); //No se encontrado el usuario pasado por las cookiess
         }
     }
     catch (error) {
@@ -84,6 +78,22 @@ const userAuthenticated = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.userAuthenticated = userAuthenticated;
+const deleteTokenCookie = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        // res.cookie('token', '', { httpOnly:true})
+        // const {token}= req.cookies
+        // res.cookie('token', null, { path:'/', httpOnly:true, domain: 'localhost' })
+        // res.cookie('title', 'geeksforgeeks', { path:'/', httpOnly:true, domain: 'localhost' });
+        res.clearCookie("token");
+        // res.clearCookie('token');
+        return res.status(200).json("Cookie cleared");
+    }
+    catch (error) {
+        console.log(error);
+        return next(error);
+    }
+});
+exports.deleteTokenCookie = deleteTokenCookie;
 const permitLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         let bearerToken;

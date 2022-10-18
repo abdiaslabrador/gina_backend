@@ -8,7 +8,7 @@ function handleErrors(error, req, res, next) {
             if (error["errors"]) {
                 errors = error["errors"];
             }
-            res.status(403).json({ errorName: error.name, errors: errors });
+            res.status(400).json({ errorName: error.name, errors: errors });
         },
         JsonWebTokenError: (resp) => {
             error["msg"] ? "" : (error["msg"] = "Error de token");

@@ -1,14 +1,9 @@
 import express from "express";
-import { authentication, userAuthenticated, permitLogin } from "../controllers/authController";
+import { authentication, userAuthenticated, permitLogin, deleteTokenCookie } from "../controllers/authController";
 import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 
 const authRouter = express.Router();
-authRouter.get(
-  "/",
-  token_verify,
-  userAuthenticated
-);
 
 authRouter.post(
   "/login",[
@@ -20,8 +15,19 @@ authRouter.post(
 );
 
 authRouter.get(
+  "/",
+  token_verify,
+  userAuthenticated
+);
+
+authRouter.get(
   "/permitLogin",
   permitLogin
+);
+
+authRouter.get(
+  "/delete-token",
+  deleteTokenCookie
 );
 
 export default authRouter;
