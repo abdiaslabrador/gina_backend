@@ -1,9 +1,16 @@
 import express from "express";
-import { authentication, userAuthenticated, permitLogin, deleteTokenCookie } from "../controllers/authController";
+import { authentication, userAuthenticated,  deleteTokenCookie } from "../controllers/authController";
 import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 
 const authRouter = express.Router();
+
+//verifica si el usuario está autenticado
+authRouter.get(
+  "/",
+  token_verify,
+  userAuthenticated
+);
 
 authRouter.post(
   "/login",[
@@ -12,17 +19,6 @@ authRouter.post(
   ]
   ,
   authentication
-);
-
-authRouter.get(
-  "/",
-  token_verify,
-  userAuthenticated
-);
-
-authRouter.get(
-  "/permitLogin",
-  permitLogin
 );
 
 authRouter.get(

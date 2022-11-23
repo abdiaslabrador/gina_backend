@@ -8,13 +8,13 @@ import {OneToOne,
         DeleteDateColumn,
         PrimaryGeneratedColumn,
         ManyToOne,
-        ManyToMany} from "typeorm"
+        ManyToMany,
+        BaseEntity} from "typeorm"
 
-import {UserBackground} from "./UserBackground"
-//otro cambio
+import {PatientBackground} from "./PatientBackground"
+    
 @Entity()
-export class User{
-
+export class Patient extends BaseEntity {
     @PrimaryGeneratedColumn()
     id:number
     
@@ -24,8 +24,12 @@ export class User{
     @Column({length:128})
     last_name:string
 
+    @Index({ unique: true })
     @Column({length:64})
     ci_rif:string
+
+    @Column({length:64, nullable:true})
+    phone_number:string
 
     @Column({length:64})
     sex:string
@@ -33,31 +37,12 @@ export class User{
     @Column()
     birthday:Date
 
-    @Column({length:64, nullable:true})
-    ci_rif_optional:string
-
-    @Column({length:64, nullable:true})
-    phone_number:string
-
     @Column({type:"text", nullable:true})
-    direccion:string
-
-    @Index({ unique: true })
-    @Column({length:264, nullable:true})
-    email:string //cambio
+    direction:string
 
     @Column({length:264, nullable:true})
-    password:string
+    email:string
     
-    @Column()
-    active:boolean
-
-    @Column()
-    secretario:boolean
-
-    @Column()
-    superuser:boolean
-
     @CreateDateColumn()
     createdAt: Date
 
@@ -67,9 +52,6 @@ export class User{
     @DeleteDateColumn()
     deleteAt: Date
     
-    @OneToOne(() => UserBackground, (userbackground:UserBackground) => userbackground.user, {
-        cascade: true,
-    })
-    @JoinColumn()
-    userbackground : UserBackground
-}        
+    @OneToOne(() => PatientBackground, (patientbackground:PatientBackground) => patientbackground.patient, {cascade: true,})
+    patientbackground : PatientBackground;
+}

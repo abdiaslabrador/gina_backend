@@ -10,7 +10,7 @@ import { Photo } from "./entities/Photo";
 import {handleErrors} from './middlewares/errorHandler'
 import {token_verify} from './middlewares/token'
 import authRouter from './routers/authRouter'
-import { User } from "./entities/User";
+import employeeRouter from './routers/employeeRouter'
 import cookieParser from 'cookie-parser'
 
 const PORT =  process.env.PORT || 4000
@@ -24,6 +24,7 @@ app.use(cors(corsOptions))
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRouter)
+app.use('/api/employee', employeeRouter)
 // const { sign, decode, verify } = jsonwebtoken;  
 
 
@@ -43,7 +44,6 @@ const main = async () => {
       } else {
         return res.status(200).json({msj:"No hay fotos"}); //contenido no encontrado
       }  
-
     } catch (error) {
       next(error)
     }

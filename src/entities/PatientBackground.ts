@@ -9,11 +9,11 @@ import {OneToOne,
     ManyToOne,
     ManyToMany} from "typeorm"
 
-import {User} from "./User"
+import {Patient} from "./Patient"
 
 
 @Entity()
-export class UserBackground{
+export class PatientBackground{
 
 @PrimaryGeneratedColumn()
 id:number
@@ -36,9 +36,6 @@ habitos:string
 @Column()
 need_child_edentigrama:boolean
 
-@OneToOne(() => User, (user:User)=>user.userbackground )
-user: User
-
 @CreateDateColumn()
 createdAt: Date
 
@@ -48,7 +45,7 @@ updateAt: Date
 @DeleteDateColumn()
 deleteAt: Date
 
-// @OneToOne(() => PhotoMetadata, (photoMetadata) => photoMetadata.photo, {
-//     cascade: true,
-// })
+@OneToOne(() => Patient, (patient:Patient)=>patient.patientbackground, {onDelete: 'CASCADE'})
+@JoinColumn()
+patient: Patient
 }        

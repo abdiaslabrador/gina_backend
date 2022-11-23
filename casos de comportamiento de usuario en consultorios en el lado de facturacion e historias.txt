@@ -1,0 +1,44 @@
+- ¿Si no facturan como hacen para saber que un paciente pagó?
+- ¿Qué le dan al paciente como comprobante de la consulta y si lo puedo ver?
+- ¿Hay alguna opción que diga algo como "es niño"?
+- ¿Los usuarios que pagan quedan registrados en el sistema médico
+y esos usuarios están relacionados con los pacientes o son indepentientes?
+
+En ambos se tiene que pedir la cédula del paciente obligatoriamente
+1 - que los usuario estén separados de facturación
+2 - que sean los mismos usuarios, y solo los que comprar son los pacientes
+
+2 - 
+a) Ventajas
+- menos redundancia de datos (menos cantidad de usuario)
+- las compras quedan registradas al menos a un paciente
+- más control con los registros de pago (asociacion con el usuario)
+- se registra 1 vez
+
+b) Desventajas
+<!-- - el cliente tiene que saber la cédula del paciente -->
+- se presta mas a accidentes con los usuarios 
+
+* Solución 1 con los pacientes que eran niños y ahora tienen cédula: 
+se elimina el paciente que se creó con cédula (esto elimina la factura 
+porque se creó porque pago el) y se modifica el usuario del niño con la 
+cédula nueva y se factura de nuevo
+
+* Solución 2 sacar un aviso que diga: "hey ya existe uno con el mismo nombre, apellido y fecha de nacimiento"
+
+1 - 
+a) ventajas
+- puede pagar quien sea pero se asocia el paciente a la compra
+- se presta menos a accidente con las usuarios
+
+b) Desventajas
+<!-- - menos control con los registros de pago -->
+- redundancia de datos
+- en los registro de dinero del dia no todos los pagos paga un paciente
+(pero si aparece el paciente en el pago)
+- se registra 2 veces (uno en la caja y el otro en el consultorio)
+
+* Solución 1 con los pacientes que eran niños y ahora tienen cédula: 
+se modifica el usuario del niño con la cédula nueva
+
+* Solución 2 sacar un aviso que diga: "hey ya existe uno con el mismo nombre, apellido y fecha de nacimiento"
