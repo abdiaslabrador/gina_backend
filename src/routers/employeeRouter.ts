@@ -32,7 +32,7 @@ employeeRouter.post(
   updateEmployeePassword
 );
 
-employeeRouter.get(
+employeeRouter.post(
   "/all",
   token_verify,
   allEmployee

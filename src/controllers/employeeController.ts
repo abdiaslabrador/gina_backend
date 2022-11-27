@@ -124,7 +124,7 @@ const updateEmployee = async (req: Request, res: Response, next:NextFunction) =>
         return  res.status(200).json({msg: "Empleado actualizado"})
       }
       else{
-            return res.status(404).json({msg: "Empleado no encontrado"})
+            return res.status(404).json({msg: "Empleado no se encuentra"})
       }
   } catch (error) {
     console.log(error)
@@ -184,6 +184,7 @@ const allEmployee = async (req: Request, res: Response, next:NextFunction) => {
           "employee.updateAt",
           "employee.deleteAt"
         ])
+        .where("employee.id != :id", { id: req.body.id })
         .getMany();
 
       return  res.status(200).json(employees)

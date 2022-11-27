@@ -72,6 +72,9 @@ const userAuthenticated = async (
         "user.phone_number",
         "user.direction",
         "user.email",
+        "user.active",
+        "user.secretary",
+        "user.superuser",
         "user.createdAt",
         "user.updateAt",
       ])
