@@ -32,28 +32,28 @@ employeeRouter.post(
   updateEmployeePassword
 );
 
-employeeRouter.post(
+employeeRouter.get(
   "/all",
   token_verify,
   allEmployee
 );
-employeeRouter.post(
+employeeRouter.post( //este se ultiliza para pregunta si ya la cédula existe al momento de crear un usuario en el front
   "/getbyci",
   token_verify,
   getEmployeeByCi
 );
 employeeRouter.post(
-  "/getbyemail",
+  "/getbyemail",   //este se ultiliza para pregunta si ya la cédula existe al momento de crear un usuario en el front
   token_verify,
   getEmployeeByEmail
 );
 employeeRouter.post(
-  "/getbyciupdate",
+  "/getbyciupdate", //ese se ultiliza para pregunta si ya la cédula existe al momento de actualizar un usuario en el front
   token_verify,
   getEmployeeByCiUpdate
 );
 employeeRouter.post(
-  "/getbyemailupdate",
+  "/getbyemailupdate", //ese se ultiliza para pregunta si ya la cédula existe al momento de actualizar un usuario en el front
   token_verify,
   getEmployeeByEmailUpdate
 );

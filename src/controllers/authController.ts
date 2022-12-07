@@ -26,6 +26,7 @@ const authentication = async (
       // .select(["user.id", "user.name", "user.last_name", "user.birthday", "user.password"])
       // .from(User,"user")
       .where("employee.email = :email", { email: email })
+      .andWhere("employee.active = true")
       .getOne();
 
     if (user) {
@@ -80,13 +81,14 @@ const userAuthenticated = async (
       ])
       // .from(User,"user")
       .where("user.id = :id", { id: req.user.id })
+      .andWhere("user.active = true")
       .getOne();
+
     if (user) {
       return res.status(200).json(user);
     } else {
       res.clearCookie('token');
       return next({name:"JsonWebTokenError", msg: "No autenticado" }); //No se encontrado el usuario pasado por las cookiess
-      // return res.status(403).json({ errorName: 403, msg: "No autenticado" }); //No se encontrado el usuario pasado por las cookiess
     }
   } catch (error) {
     console.log(error);

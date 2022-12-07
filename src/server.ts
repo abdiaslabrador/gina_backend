@@ -11,6 +11,10 @@ import {handleErrors} from './middlewares/errorHandler'
 import {token_verify} from './middlewares/token'
 import authRouter from './routers/authRouter'
 import employeeRouter from './routers/employeeRouter'
+import clientRouter from './routers/clientRouter'
+import currencyRouter from './routers/currencyRouter'
+import productRouter from './routers/productRouter'
+
 import cookieParser from 'cookie-parser'
 
 const PORT =  process.env.PORT || 4000
@@ -25,6 +29,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRouter)
 app.use('/api/employee', employeeRouter)
+app.use('/api/client', clientRouter)
+app.use('/api/currency', currencyRouter)
+app.use('/api/product', productRouter)
+
 // const { sign, decode, verify } = jsonwebtoken;  
 
 

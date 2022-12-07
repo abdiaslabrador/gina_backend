@@ -2,6 +2,7 @@
 export interface UserInf{
     id?:number,
      name?:string,
+     email?:string,
      last_name?:string,
      ci_rif?:string,
      sex?:string,

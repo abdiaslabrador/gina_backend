@@ -79,8 +79,8 @@ const deleteEmployee = async (req: Request, res: Response, next:NextFunction) =>
           "employee.superuser",
           "employee.createdAt",
           "employee.updateAt",
-          "employee.deleteAt"
         ])
+        .where("employee.id != :id", { id: req.user.id })
         .getMany();
 
         return  res.status(200).json(employees)
@@ -182,11 +182,10 @@ const allEmployee = async (req: Request, res: Response, next:NextFunction) => {
           "employee.superuser",
           "employee.createdAt",
           "employee.updateAt",
-          "employee.deleteAt"
         ])
-        .where("employee.id != :id", { id: req.body.id })
+        .where("employee.id != :id", { id: req.user.id })
         .getMany();
-
+        
       return  res.status(200).json(employees)
   } catch (error) {
     console.log(error)
@@ -215,7 +214,6 @@ const getEmployeeByCi = async (req: Request, res: Response, next:NextFunction) =
           "employee.superuser",
           "employee.createdAt",
           "employee.updateAt",
-          "employee.deleteAt"
         ])
         .where("employee.ci_rif = :ci_rif", { ci_rif: req.body.ci_rif })
         .getOne();
@@ -252,7 +250,6 @@ const getEmployeeByEmail = async (req: Request, res: Response, next:NextFunction
           "employee.superuser",
           "employee.createdAt",
           "employee.updateAt",
-          "employee.deleteAt"
         ])
         .where("employee.email = :email", { email: req.body.email })
         .getOne();
@@ -289,7 +286,6 @@ const getEmployeeByCiUpdate = async (req: Request, res: Response, next:NextFunct
           "employee.superuser",
           "employee.createdAt",
           "employee.updateAt",
-          "employee.deleteAt"
         ])
         .where("employee.ci_rif = :look_ci_rif", { look_ci_rif: req.body.look_ci_rif })
         .andWhere("employee.ci_rif != :ci_rif", { ci_rif: req.body.ci_rif })
@@ -327,7 +323,6 @@ const getEmployeeByEmailUpdate = async (req: Request, res: Response, next:NextFu
           "employee.superuser",
           "employee.createdAt",
           "employee.updateAt",
-          "employee.deleteAt"
         ])
         .where("employee.email = :look_email", { look_email: req.body.look_email })
         .andWhere("employee.email != :email", { email: req.body.email })

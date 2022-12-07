@@ -1,33 +1,51 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, 
+    CreateDateColumn,
+    UpdateDateColumn,
+    DeleteDateColumn, 
+    Index} from "typeorm";
 
 @Entity()
-export class Producto extends BaseEntity {
+export class Product extends BaseEntity {
 
     @PrimaryGeneratedColumn()
-    id: number
+    id: number;
 
-    @Column({type:"varchar"})
-    product_name: string;
+    @Index({ unique: true })
+    @Column({length:10})
+    code:string;
+
+    @Column()
+    cant: number;
 
     @Column({type:"text"})
     description: string;
 
     @Column({
-        type:"numeric",
+        type:"decimal",
         precision:12,
-         scale: 2
+        scale: 2
        })
-    bs_price: number;
+    price: number;
 
     @Column({
-         type:"numeric",
+         type:"decimal",
          precision:12,
          scale: 2
         })
-    ds_price: number;
+    price_ref: number;
 
+    @Column({type:"boolean", default: true })
+    admit_update_currency:boolean;
 
-    @Column()
-    cant: number;
+    @Column({type:"boolean", default: true })
+    enable_cant:boolean;
+    
+    @CreateDateColumn()
+    createdAt: Date;
 
+    @UpdateDateColumn()
+    updateAt: Date;
+
+    @DeleteDateColumn()
+    deleteAt: Date;
 }
