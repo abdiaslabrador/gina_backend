@@ -3,10 +3,16 @@ import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 import { 
           createProduct, deleteProduct, updateProduct, 
-          searchByDescription, searchByCode, searchByRange
+          searchBy, updateProductPrices
        } from '../controllers/productController'
 
 const productRouter = express.Router();
+
+productRouter.get(
+  "/updateprices",
+  token_verify,
+  updateProductPrices  
+);
 
 productRouter.post(
   "/create",
@@ -27,22 +33,12 @@ productRouter.post(
 );
 
 productRouter.post(
-  "/getbydescription",
+  "/searchby",
   token_verify,
-  searchByDescription
+  searchBy
 );
 
-productRouter.post(
-  "/getbycode",
-  token_verify,
-  searchByCode
-);
 
-productRouter.post(
-  "/getbyrange",
-  token_verify,
-  searchByRange
-);
 
 
 export default productRouter;

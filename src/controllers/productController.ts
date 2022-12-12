@@ -1,4 +1,5 @@
 import { Product } from "../entities/Product";
+import { Currency } from "../entities/Currency";
 import { alphabet_code } from "../helpers/codeGenerator";
 import { PatientBackground } from "../entities/PatientBackground";
 import bcrypt  from "bcrypt";
@@ -18,6 +19,7 @@ const createProduct = async (req: Request, res: Response, next:NextFunction) => 
         product.price=req.body.price
         product.price_ref=req.body.price_ref
         product.admit_update_currency=req.body.admit_update_currency
+        product.enable_cant=req.body.enable_cant
 
         await productRepository.save(product);
 
@@ -85,17 +87,32 @@ const updateProduct = async (req: Request, res: Response, next:NextFunction) => 
   }
 }
 
-const searchByDescription = async (req: Request, res: Response, next:NextFunction) => {
-  /*recodar instalar la extenesion en la base de datos*/
+const searchBy = async (req: Request, res: Response, next:NextFunction) => {
+
   try {
     const productRepository = AppDataSource.getRepository(Product);
-    let product = await productRepository
-        .createQueryBuilder("product")
-        .where(`LOWER(unaccent(description)) like LOWER(unaccent('%${req.body.description}%'))`)
-        .orderBy("product.description")
-        .getMany();
+    let product = [];
+    if(req.body.selectOption == "lessThan"){
+       product = await productRepository
+          .createQueryBuilder("product")
+          .where("product.cant <= :cant", {cant : req.body.selectValue})
+          .andWhere("product.cant >= 0")
+          .orderBy("product.cant")
+          .getMany();
+      }else if(req.body.selectOption == "description"){
+       product = await productRepository
+          .createQueryBuilder("product")
+          .where(`LOWER(unaccent(description)) like LOWER(unaccent('%${req.body.selectValue}%'))`)
+          .orderBy("product.description")
+          .getMany();
+      }else if(req.body.selectOption == "code"){
+       product = await productRepository
+          .createQueryBuilder("product")
+          .where("product.code = :code", {code : req.body.selectValue})
+          .getMany();
+      }
 
-        return  res.status(200).json(product)
+      return  res.status(200).json(product)
   } catch (error) {
     console.log(error)
     return next(error)
@@ -103,47 +120,39 @@ const searchByDescription = async (req: Request, res: Response, next:NextFunctio
   
 }
 
-const searchByCode = async (req: Request, res: Response, next:NextFunction) => {
-
+const updateProductPrices = async (req: Request, res: Response, next:NextFunction) => {
   try {
-    const productRepository = AppDataSource.getRepository(Product);
-    let product = await productRepository
-        .createQueryBuilder("product")
-        .where("product.code = :code", {code : req.body.code})
+    
+    const currencyRepository = AppDataSource.getRepository(Currency);
+    let currency = await currencyRepository
+        .createQueryBuilder("currency")
+        .where("LOWER(currency.name) LIKE '%dolar%'")
         .getOne();
 
-        if(product){
-          return  res.status(200).json(product)
-        }
-        else{
-          return res.status(404).json({msg: "Producto no encontrado"})
-        }
-  } catch (error) {
-    console.log(error)
-    return next(error)
-  }
-  
-}
-
-const searchByRange = async (req: Request, res: Response, next:NextFunction) => {
-
-  try {
+    if(currency){
     const productRepository = AppDataSource.getRepository(Product);
     let product = await productRepository
-        .createQueryBuilder("product")
-        .where("product.cant <= :cant", {cant : req.body.cant})
-        .orderBy("product.cant")
-        .getMany();
+                  .createQueryBuilder()
+                  .update()
+                  .set({
+                    
+                    price: () => `price_ref * ${currency.today_currency}`,
+                  })
+                  .where("admit_update_currency = true")
+                  .execute()
+    }
+    else{
+      return  res.status(404).json({msg: "Divisa no encontrada"})
+    }
+    return  res.status(200).json({msg: "Precio de productos actualizado"})
 
-        return  res.status(200).json(product) 
   } catch (error) {
     console.log(error)
     return next(error)
   }
-  
 }
 
 export  {
             createProduct, deleteProduct, updateProduct, 
-            searchByDescription, searchByCode, searchByRange
+            searchBy, updateProductPrices
         };
