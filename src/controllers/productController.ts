@@ -62,7 +62,6 @@ const updateProduct = async (req: Request, res: Response, next:NextFunction) => 
     let product = await productRepository
         .createQueryBuilder("product")
         .where("product.id = :id", { id: req.body.id })
-        // .where("product.ci_rif = :ci_rif", { ci_rif: req.body.id })
         .getOne();
     
       if(product){
@@ -72,7 +71,7 @@ const updateProduct = async (req: Request, res: Response, next:NextFunction) => 
         product.price=req.body.price
         product.price_ref=req.body.price_ref
         product.admit_update_currency=req.body.admit_update_currency
-        
+        product.enable_cant=req.body.enable_cant
 
         await productRepository.save(product);
 
@@ -91,13 +90,13 @@ const searchBy = async (req: Request, res: Response, next:NextFunction) => {
 
   try {
     const productRepository = AppDataSource.getRepository(Product);
-    let product = [];
+    let product : Product[] = [];
     if(req.body.selectOption == "lessThan"){
        product = await productRepository
           .createQueryBuilder("product")
           .where("product.cant <= :cant", {cant : req.body.selectValue})
           .andWhere("product.cant >= 0")
-          .orderBy("product.cant")
+          .orderBy("product.description")
           .getMany();
       }else if(req.body.selectOption == "description"){
        product = await productRepository
@@ -109,9 +108,20 @@ const searchBy = async (req: Request, res: Response, next:NextFunction) => {
        product = await productRepository
           .createQueryBuilder("product")
           .where("product.code = :code", {code : req.body.selectValue})
+          .orderBy("product.description")
+          .getMany();
+      }else if(req.body.selectOption == "all"){
+       product = await productRepository
+          .createQueryBuilder("product")
+          .orderBy("product.description")
           .getMany();
       }
-
+      
+      for (let i = 0; i < product.length; i++) {
+        product[i].price = Number(product[i].price);
+        product[i].price_ref = Number(product[i].price_ref);
+      }
+      
       return  res.status(200).json(product)
   } catch (error) {
     console.log(error)
@@ -131,7 +141,7 @@ const updateProductPrices = async (req: Request, res: Response, next:NextFunctio
 
     if(currency){
     const productRepository = AppDataSource.getRepository(Product);
-    let product = await productRepository
+    await productRepository
                   .createQueryBuilder()
                   .update()
                   .set({

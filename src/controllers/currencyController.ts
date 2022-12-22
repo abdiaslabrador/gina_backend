@@ -20,13 +20,16 @@ const getCurrency = async (req: Request, res: Response, next:NextFunction) => {
           "currency.updateAt",
         ])
         .getOne();
-        
+      /*
+        esta converción es necesaria para que el numero sea 
+        un entero y no haya que realizar después casting
+      */
+      currency.today_currency = Number(currency.today_currency); 
       return  res.status(200).json(currency)
   } catch (error) {
     console.log(error)
     return next(error)
   }
-  
 }
 
 const updateCurrency = async (req: Request, res: Response, next:NextFunction) => {
