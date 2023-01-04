@@ -2,7 +2,10 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity,
     CreateDateColumn,
     UpdateDateColumn,
     DeleteDateColumn, 
-    Index} from "typeorm";
+    Index,
+    OneToMany} from "typeorm";
+
+import {Document_det} from "./Document_det";
 
 @Entity()
 export class Product extends BaseEntity {
@@ -40,6 +43,9 @@ export class Product extends BaseEntity {
     @Column({type:"boolean", default: true })
     enable_cant:boolean;
     
+    @OneToMany(() => Document_det, (document_det) => document_det.product, { cascade: true })
+    docu_dets: Document_det
+
     @CreateDateColumn()
     createdAt: Date;
 

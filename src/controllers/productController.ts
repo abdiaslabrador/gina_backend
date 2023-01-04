@@ -107,7 +107,7 @@ const searchBy = async (req: Request, res: Response, next:NextFunction) => {
       }else if(req.body.selectOption == "code"){
        product = await productRepository
           .createQueryBuilder("product")
-          .where("product.code = :code", {code : req.body.selectValue})
+          .where("LOWER(product.code) = LOWER(:code)", {code : req.body.selectValue})
           .orderBy("product.description")
           .getMany();
       }else if(req.body.selectOption == "all"){

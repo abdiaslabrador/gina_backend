@@ -8,8 +8,10 @@ import {OneToOne,
         DeleteDateColumn,
         PrimaryGeneratedColumn,
         ManyToOne,
+        OneToMany,
         ManyToMany} from "typeorm"
 
+import { Document } from "./Document";
 
 @Entity()
 export class Client{
@@ -32,6 +34,9 @@ export class Client{
 
     @Column({type:"text", nullable:true})
     direction:string
+
+    @OneToMany(() => Document, (document) => document.client, { cascade: true })
+    documents: Document
 
     @CreateDateColumn()
     createdAt: Date

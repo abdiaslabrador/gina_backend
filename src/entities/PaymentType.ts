@@ -7,32 +7,31 @@ import {OneToOne,
     UpdateDateColumn,
     DeleteDateColumn,
     PrimaryGeneratedColumn,
-    OneToMany,
     ManyToOne,
+    OneToMany,
     ManyToMany} from "typeorm";
-
-import {PaymentType} from "./PaymentType";
-
+import {Currency} from "./Currency";
+import {Document_payment} from "./Document_payment";
 @Entity()
-export class Currency{
+export class PaymentType{
 
 @PrimaryGeneratedColumn()
 id:number
 
-// @Column({length:64, nullable:true})
-// code:string
-
 @Column({length:128})
 name:string
-
-@Column("decimal", { precision: 12, scale: 2 })
-today_currency:number
 
 @Column({type:"boolean", default: true })
 active:boolean
 
-@OneToMany(() => PaymentType, (paymentType) => paymentType.currency, { cascade: true })
-paymentType: PaymentType[]
+@Column({length:64})
+type:string
+
+@ManyToOne(() => Currency, (currency) => currency.paymentType, {onDelete: 'CASCADE'})
+currency: Currency
+
+@OneToMany(() => Document_payment, (payment) => payment.payment, { cascade: true })
+docu_payments: Document_payment
 
 @CreateDateColumn()
 createdAt: Date

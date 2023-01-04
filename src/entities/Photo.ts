@@ -46,7 +46,6 @@ export class Photo{
     metadata: PhotoMetadata
 
     @ManyToOne(() => Author, (author) => author.photos, {onDelete: 'CASCADE'})
-    @JoinColumn()
     author: Author
 
     @ManyToMany(() => Album, (album) => album.photos, {cascade: true,})

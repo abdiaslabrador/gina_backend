@@ -1,30 +1,33 @@
 import {
-    Entity, Column, PrimaryGeneratedColumn,
-     JoinTable,  ManyToMany,
-     CreateDateColumn,
-       UpdateDateColumn,
-       DeleteDateColumn,
-        } from "typeorm"
-import { Photo } from "./Photo"
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  JoinTable,
+  ManyToMany,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+} from "typeorm";
+import { Photo } from "./Photo";
 
 @Entity()
-export class Album{
-    @PrimaryGeneratedColumn()
-    id:number
+export class Album {
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    name: string
+  @Column()
+  name: string;
 
-    @ManyToMany(() => Photo, (photo) => photo.albums)
-    @JoinTable() //is required
-    photos: Photo[]
+  @ManyToMany(() => Photo, (photo) => photo.albums)
+  @JoinTable() //is required
+  photos: Photo[];
 
-    @CreateDateColumn()
-    createdAt: Date
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updateAt: Date
+  @UpdateDateColumn()
+  updateAt: Date;
 
-    @DeleteDateColumn()
-    deleteAt: Date
+  @DeleteDateColumn()
+  deleteAt: Date;
 }

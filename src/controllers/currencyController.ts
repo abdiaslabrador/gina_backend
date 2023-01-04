@@ -19,12 +19,14 @@ const getCurrency = async (req: Request, res: Response, next:NextFunction) => {
           "currency.createdAt",
           "currency.updateAt",
         ])
+        .where("name != 'bolivar'")
+        .andWhere("name != 'Bolivar'")
         .getOne();
       /*
         esta converción es necesaria para que el numero sea 
         un entero y no haya que realizar después casting
       */
-      currency.today_currency = Number(currency.today_currency); 
+      (currency)? currency.today_currency = Number(currency.today_currency) : null;
       return  res.status(200).json(currency)
   } catch (error) {
     console.log(error)
