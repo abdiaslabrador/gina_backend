@@ -10,6 +10,50 @@ import { Bill } from "../entities/Bill";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { getDataSource, AppDataSource } from "../data-source";
 
+
+const getBillByDate = async (req: Request, res: Response, next:NextFunction) => {
+
+    try {
+        const bills = await AppDataSource
+        .createQueryBuilder(Bill, "bill")
+        .innerJoinAndSelect("bill.docu", "document")
+        .innerJoinAndSelect("document.client", "client")
+        .innerJoinAndSelect("document.docu_dets", "docu_dets")
+        .innerJoinAndSelect("document.docu_payments", "docu_payments")
+        .innerJoinAndSelect("docu_payments.payment", "payment")
+        .innerJoinAndSelect("payment.currency", "currency")
+        .where(`DATE_TRUNC('day', document.document_date) >= '${req.body.date_since}'`)
+        .andWhere(`DATE_TRUNC('day', document.document_date) <= '${req.body.date_until}'`)
+        .getMany();
+        
+        return  res.status(200).json(bills)
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  }
+
+const getBillById = async (req: Request, res: Response, next:NextFunction) => {
+
+    try {
+        const bill = await AppDataSource
+        .createQueryBuilder(Bill, "bill")
+        .innerJoinAndSelect("bill.docu", "document")
+        .innerJoinAndSelect("document.client", "client")
+        .innerJoinAndSelect("document.docu_dets", "docu_dets")
+        .innerJoinAndSelect("document.docu_payments", "docu_payments")
+        .innerJoinAndSelect("docu_payments.payment", "payment")
+        .innerJoinAndSelect("payment.currency", "currency")
+        .where("bill.id = :id", {id: req.body.id})
+        .getMany();
+    
+        return  res.status(200).json(bill)
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+  }
+
 const createBill = async (req: Request, res: Response, next:NextFunction) => {
 
     try {
@@ -160,7 +204,7 @@ const createBill = async (req: Request, res: Response, next:NextFunction) => {
 // }
 
 export  {
-            createBill, 
+            createBill, getBillById, getBillByDate
             // deleteProduct, updateProduct, 
             // searchBy, updateProductPrices
         };

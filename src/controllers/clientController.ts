@@ -165,7 +165,8 @@ const getClientByCiUpdate = async (req: Request, res: Response, next:NextFunctio
 }
 
 
-export  {createClient, deleteClient, updateClient, 
-        getClientByCi, getClientByCiUpdate
+export  {
+          createClient, deleteClient, updateClient, 
+          getClientByCi, getClientByCiUpdate
         //  allEmployee,  
         };
