@@ -3,7 +3,6 @@ import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 import { createClient, deleteClient, updateClient, 
          getClientByCi, getClientByCiUpdate
-        //  allEmployee, 
        } from '../controllers/clientController'
 
 const clientRouter = express.Router();

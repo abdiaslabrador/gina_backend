@@ -1,0 +1,11 @@
+se debería agragar la validación de:
+* cuando un producto se agrego en la caja, verificar 
+si ha sido eliminado en la base de datos previamente
+
+* cuano se selecciona un cliente a realizar una compra,
+verificar si se ha sido elimando previamente o si está en uso
+al momento de eliminar un cliente
+
+*en la tasa de productos, mostar 2 estados,
+la tasa en uso, la tasa actualizada o mostrar la ultima vez que 
+se actualizo

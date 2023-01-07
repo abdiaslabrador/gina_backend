@@ -162,7 +162,43 @@ const updateProductPrices = async (req: Request, res: Response, next:NextFunctio
   }
 }
 
+const checkCant = async (req: Request, res: Response, next:NextFunction) => {
+  try {
+    let ids = [];
+    for (const  {id} of req.body.productListRegisterBox) {
+      ids.push(id);
+    }
+    const productRepository = AppDataSource.getRepository(Product);
+    const products = await productRepository
+                  .createQueryBuilder("product")
+                  .where("product.id in (:...ids)", {ids : ids})
+                  .andWhere("product.enable_cant = true")
+                  .getMany();
+
+    let productBadList = [];
+    req.body.productListRegisterBox.forEach( productRegisterBox => {
+    const product = products.find( product => product.id == productRegisterBox.id && product.cant < productRegisterBox.cant)
+      if(product){
+        productBadList.push({ 
+                                id : product.id,
+                                description : product.description,
+                                cant :  product.cant,            
+                              })
+      }
+    })
+    if(productBadList.length == 0){
+      return  res.status(200).json({msg: "Cantidates suficiente para cada producto a llevar"})
+    }else{
+      return  res.status(400).json({code: "PRODUCT_BADCANT", productBadList: productBadList})
+    }
+    
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
+}
+
 export  {
             createProduct, deleteProduct, updateProduct, 
-            searchBy, updateProductPrices
+            searchBy, updateProductPrices, checkCant
         };

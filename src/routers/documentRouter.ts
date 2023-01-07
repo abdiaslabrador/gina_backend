@@ -8,19 +8,19 @@ const documentRouter = express.Router();
 
 documentRouter.post(
   "/bill/create",
-//   token_verify,
+  token_verify,
   createBill
 );
 
 documentRouter.post(
   "/bill/getbyid",
-//   token_verify,
+  token_verify,
   getBillById
 );
 
 documentRouter.post(
   "/bill/getbydate",
-//   token_verify,
+  token_verify,
   getBillByDate
 );
 

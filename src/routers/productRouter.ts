@@ -3,7 +3,7 @@ import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 import { 
           createProduct, deleteProduct, updateProduct, 
-          searchBy, updateProductPrices
+          searchBy, updateProductPrices, checkCant
        } from '../controllers/productController'
 
 const productRouter = express.Router();
@@ -36,6 +36,12 @@ productRouter.post(
   "/searchby",
   token_verify,
   searchBy
+);
+
+productRouter.post(
+  "/checkcant",
+  token_verify,
+  checkCant
 );
 
 
