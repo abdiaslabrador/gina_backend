@@ -140,16 +140,18 @@ const updateProductPrices = async (req: Request, res: Response, next:NextFunctio
         .getOne();
 
     if(currency){
-    const productRepository = AppDataSource.getRepository(Product);
-    await productRepository
-                  .createQueryBuilder()
-                  .update()
-                  .set({
-                    
-                    price: () => `price_ref * ${currency.today_currency}`,
-                  })
-                  .where("admit_update_currency = true")
-                  .execute()
+      await AppDataSource.transaction(async (transactionalEntityManager) => {
+        const productRepository = await transactionalEntityManager.getRepository(Product);
+        await productRepository
+        .createQueryBuilder()
+        .update()
+        .set({
+          price: () => `price_ref * ${currency.today_currency}`,
+        })
+        .where("admit_update_currency = true")
+        .execute()
+      })
+    
     }
     else{
       return  res.status(404).json({msg: "Divisa no encontrada"})
