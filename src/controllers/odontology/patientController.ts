@@ -2,6 +2,7 @@ import { Patient } from "../../entities/Patient";
 import { PatientBackground } from "../../entities/PatientBackground";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { getDataSource, AppDataSource } from "../../data-source";
+import { alphabet_code } from "../../helpers/codeGenerator";
 
 const createPatient = async (req: Request, res: Response, next:NextFunction) => {
 
@@ -44,53 +45,33 @@ const createPatient = async (req: Request, res: Response, next:NextFunction) => 
     
 }
 
-// const deletePatient = async (req: Request, res: Response, next:NextFunction) => {
+const deletePatient = async (req: Request, res: Response, next:NextFunction) => {
 
-//   try {
-//     const patientRepository = AppDataSource.getRepository(Patient);
-//     let patient = await patientRepository
-//         .createQueryBuilder("patient")
-//         .where("patient.id = :id", { id: req.body.id })
-//         .getOne();
+  try {
+    const patientRepository = AppDataSource.getRepository(Patient);
+    let patient = await patientRepository
+        .createQueryBuilder("patient")
+        .innerJoinAndSelect("patient.background", "background")
+        .where("patient.id = :id", { id: req.body.id })
+        .getOne();
     
-//       if(patient){
+      if(patient){
 
-//         patient.ci_rif=  alphabet_code(4) + patient.ci_rif
-//         patient.deleteAt=  new Date()
-//         patient.email = null;
-//         await patientRepository.save(patient);
+        patient.ci_rif=  alphabet_code(4) + patient.ci_rif;
+        await patientRepository.save(patient);
+        await patientRepository.softRemove(patient);
 
-//         let patients = await patientRepository
-//         .createQueryBuilder("patient")
-//         .select([
-//           "patient.id",
-//           "patient.name",
-//           "patient.last_name",
-//           "patient.ci_rif",
-//           "patient.birthday",
-//           "patient.phone_number",
-//           "patient.direction",
-//           "patient.email",
-//           "patient.active",
-//           "patient.secretary",
-//           "patient.superuser",
-//           "patient.createdAt",
-//           "patient.updateAt",
-//         ])
-//         .where("patient.id != :id", { id: req.user.id })
-//         .getMany();
-
-//         return  res.status(200).json(patients)
-//       }
-//       else{
-//             return res.status(404).json({msg: "Paciente no encontrado"})
-//       }
-//   } catch (error) {
-//     console.log(error)
-//     return next(error)
-//   }
+        return  res.status(200).json({msg: "Paciente eliminado"})
+      }
+      else{
+            return res.status(404).json({msg: "Paciente no encontrado"})
+      }
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
   
-// }
+}
 
 const updatePatient = async (req: Request, res: Response, next:NextFunction) => {
 
@@ -212,7 +193,7 @@ const getPatientByNames = async (req: Request, res: Response, next:NextFunction)
 
 export  { createPatient, 
           updatePatient,
-        //  deletePatient, 
+         deletePatient, 
         getPatientByCi,
         getPatientByNames, 
          getPatientByBirthday,

@@ -3,7 +3,7 @@ import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 import { createPatient, 
          updatePatient, 
-        // deletePatient,
+        deletePatient,
         getPatientByCi,
         getPatientByNames,
         getPatientByBirthday,
@@ -18,11 +18,11 @@ patientRouter.post(
   createPatient
 );
 
-// patientRouter.post(
-//   "/delete",
-//   token_verify,
-//   deletePatient
-// );
+patientRouter.post(
+  "/delete",
+  token_verify,
+  deletePatient
+);
 
 patientRouter.post(
   "/update",
