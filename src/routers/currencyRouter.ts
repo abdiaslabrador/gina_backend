@@ -2,7 +2,7 @@ import express from "express";
 import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 import { updateCurrency, getCurrency
-       } from '../controllers/currencyController'
+       } from '../controllers/register_box/currencyController'
 
 const currencyRouter = express.Router();
 

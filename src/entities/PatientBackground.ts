@@ -18,22 +18,22 @@ export class PatientBackground{
 @PrimaryGeneratedColumn()
 id:number
 
-@Column("text") //reacción medicamentosa
+@Column({type:"text", nullable:true}) //reacción medicamentosa
 rm:string
 
-@Column("text") //antecedentes patológicos personales
+@Column({type:"text", nullable:true}) //antecedentes patológicos personales
 app:string
 
-@Column("text") //antecedentes hemorágicos
+@Column({type:"text", nullable:true}) //antecedentes hemorágicos
 ah:string
 
-@Column("text") //antecedentes patológicos familiares
+@Column({type:"text", nullable:true}) //antecedentes patológicos familiares
 apf:string
 
-@Column("text")
-habitos:string
+@Column({type:"text", nullable:true})
+habits:string
 
-@Column()
+@Column({default:false, nullable:true})
 need_child_edentigrama:boolean
 
 @CreateDateColumn()
@@ -45,7 +45,7 @@ updateAt: Date
 @DeleteDateColumn()
 deleteAt: Date
 
-@OneToOne(() => Patient, (patient:Patient)=>patient.patientbackground, {onDelete: 'CASCADE'})
+@OneToOne(() => Patient, (patient:Patient)=>patient.background, {onDelete: 'CASCADE'})
 @JoinColumn()
 patient: Patient
-}        
+}

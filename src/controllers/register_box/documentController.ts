@@ -1,12 +1,12 @@
-import { Product } from "../entities/Product";
-import { Document } from "../entities/Document";
-import { Document_det } from "../entities/Document_det";
-import { Document_payment } from "../entities/Document_payment";
-import { PaymentType } from "../entities/PaymentType";
+import { Product } from "../../entities/Product";
+import { Document } from "../../entities/Document";
+import { Document_det } from "../../entities/Document_det";
+import { Document_payment } from "../../entities/Document_payment";
+import { PaymentType } from "../../entities/PaymentType";
 
-import { Bill } from "../entities/Bill";
+import { Bill } from "../../entities/Bill";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import { getDataSource, AppDataSource } from "../data-source";
+import { getDataSource, AppDataSource } from "../../data-source";
 
 
 const getBillByDate = async (req: Request, res: Response, next:NextFunction) => {
@@ -26,7 +26,6 @@ const getBillByDate = async (req: Request, res: Response, next:NextFunction) => 
         .andWhere(`DATE_TRUNC('day', document.document_date) <= '${req.body.date_until}'`)
         .getMany();
 
-        console.log(bills)
         return  res.status(200).json(bills)
     } catch (error) {
       console.log(error)
@@ -48,9 +47,13 @@ const getBillById = async (req: Request, res: Response, next:NextFunction) => {
         .innerJoinAndSelect("docu_payments.payment", "payment")
         .innerJoinAndSelect("payment.currency", "currency")
         .where("bill.id = :id", {id: req.body.id})
-        .getMany();
-    
-        return  res.status(200).json(bill)
+        .getOne();
+        
+        if(bill)
+          return  res.status(200).json(bill)
+        else
+          return  res.status(404).json({msg: "Factura no encontrada"})
+
     } catch (error) {
       console.log(error)
       return next(error)

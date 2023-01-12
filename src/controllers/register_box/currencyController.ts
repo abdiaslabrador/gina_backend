@@ -1,10 +1,7 @@
-import { Currency } from "../entities/Currency";
-import { alphabet_code } from "../helpers/codeGenerator";
-import { PatientBackground } from "../entities/PatientBackground";
-import bcrypt  from "bcrypt";
+import { Currency } from "../../entities/Currency";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import jsonwebtoken from "jsonwebtoken";
-import { getDataSource, AppDataSource } from "../data-source";
+import { getDataSource, AppDataSource } from "../../data-source";
 
 const getCurrency = async (req: Request, res: Response, next:NextFunction) => {
 

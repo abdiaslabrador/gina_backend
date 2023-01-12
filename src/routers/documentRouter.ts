@@ -2,7 +2,7 @@ import express from "express";
 import {token_verify} from '../middlewares/token'
 import { 
           createBill, getBillById, getBillByDate
-       } from '../controllers/documentController'
+       } from '../controllers/register_box/documentController'
 
 const documentRouter = express.Router();
 

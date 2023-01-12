@@ -1,10 +1,7 @@
-import { Client } from "../entities/Client";
-import { alphabet_code } from "../helpers/codeGenerator";
-import { PatientBackground } from "../entities/PatientBackground";
-import bcrypt  from "bcrypt";
+import { Client } from "../../entities/Client";
+import { alphabet_code } from "../../helpers/codeGenerator";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import jsonwebtoken from "jsonwebtoken";
-import { getDataSource, AppDataSource } from "../data-source";
+import { getDataSource, AppDataSource } from "../../data-source";
 
 const createClient = async (req: Request, res: Response, next:NextFunction) => {
 
@@ -123,7 +120,7 @@ const getClientByCi = async (req: Request, res: Response, next:NextFunction) => 
         return  res.status(200).json(client)
       }
       else{
-        return res.status(404).json({msg: "Empleado no encontrado"})
+        return res.status(404).json({msg: "Cliente no encontrado"})
       }
   } catch (error) {
     console.log(error)
@@ -156,7 +153,7 @@ const getClientByCiUpdate = async (req: Request, res: Response, next:NextFunctio
         return  res.status(200).json(client)
       }
       else{
-        return res.status(404).json({msg: "Empleado no encontrado"})
+        return res.status(404).json({msg: "Cliente no encontrado"})
       }
   } catch (error) {
     console.log(error)

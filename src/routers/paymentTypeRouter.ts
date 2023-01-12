@@ -1,6 +1,6 @@
 import express from "express";
 import { token_verify } from '../middlewares/token'
-import { getNationalPayment, getForeignPayment } from '../controllers/paymentTypeController'
+import { getNationalPayment, getForeignPayment } from '../controllers/register_box/paymentTypeController'
 
 const paymentTypeRouter = express.Router();
 

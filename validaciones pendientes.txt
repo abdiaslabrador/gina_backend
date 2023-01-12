@@ -9,3 +9,5 @@ al momento de eliminar un cliente
 *en la tasa de productos, mostar 2 estados,
 la tasa en uso, la tasa actualizada o mostrar la ultima vez que 
 se actualizo
+
+*chequear todos los eliminar

@@ -4,7 +4,7 @@ import {token_verify} from '../middlewares/token'
 import { 
           createProduct, deleteProduct, updateProduct, 
           searchBy, updateProductPrices, checkCant
-       } from '../controllers/productController'
+       } from '../controllers/register_box/productController'
 
 const productRouter = express.Router();
 

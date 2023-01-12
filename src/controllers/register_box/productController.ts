@@ -1,11 +1,8 @@
-import { Product } from "../entities/Product";
-import { Currency } from "../entities/Currency";
-import { alphabet_code } from "../helpers/codeGenerator";
-import { PatientBackground } from "../entities/PatientBackground";
-import bcrypt  from "bcrypt";
+import { Product } from "../../entities/Product";
+import { Currency } from "../../entities/Currency";
+import { alphabet_code } from "../../helpers/codeGenerator";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import jsonwebtoken from "jsonwebtoken";
-import { getDataSource, AppDataSource } from "../data-source";
+import { getDataSource, AppDataSource } from "../../data-source";
 
 const createProduct = async (req: Request, res: Response, next:NextFunction) => {
 

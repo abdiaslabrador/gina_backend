@@ -4,7 +4,7 @@ import {token_verify} from '../middlewares/token'
 import { createEmployee, updateEmployee, deleteEmployee,
          updateEmployeePassword, allEmployee, getEmployeeByCi,
          getEmployeeByEmail, getEmployeeByCiUpdate, getEmployeeByEmailUpdate
-       } from '../controllers/employeeController'
+       } from '../controllers/register_box/employeeController'
 
 const employeeRouter = express.Router();
 

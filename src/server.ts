@@ -16,6 +16,7 @@ import currencyRouter from './routers/currencyRouter'
 import productRouter from './routers/productRouter'
 import paymentTypeRouter from './routers/paymentTypeRouter'
 import documentRouter from './routers/documentRouter'
+import patientRouter from './routers/patientRouter'
 import cookieParser from 'cookie-parser'
 
 const PORT =  process.env.PORT || 4000
@@ -35,6 +36,7 @@ app.use('/api/currency', currencyRouter)
 app.use('/api/product', productRouter)
 app.use('/api/paymenttype', paymentTypeRouter)
 app.use('/api/document', documentRouter)
+app.use('/api/patient', patientRouter)
 
 
 // const { sign, decode, verify } = jsonwebtoken;  

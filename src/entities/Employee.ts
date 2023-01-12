@@ -10,9 +10,6 @@ import {OneToOne,
         ManyToOne,
         ManyToMany} from "typeorm"
 
-import {Patient} from "./Patient"
-
-
 @Entity()
 export class Employee{
 

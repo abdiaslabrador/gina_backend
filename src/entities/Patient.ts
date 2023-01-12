@@ -28,20 +28,17 @@ export class Patient extends BaseEntity {
     @Column({length:64})
     ci_rif:string
 
+    @Column({length:64})
+    sex:string
+    
+    @Column()
+    birthday:Date
+    
     @Column({length:64, nullable:true})
     phone_number:string
 
-    @Column({length:64})
-    sex:string
-
-    @Column()
-    birthday:Date
-
     @Column({type:"text", nullable:true})
     direction:string
-
-    @Column({length:264, nullable:true})
-    email:string
     
     @CreateDateColumn()
     createdAt: Date
@@ -53,5 +50,5 @@ export class Patient extends BaseEntity {
     deleteAt: Date
     
     @OneToOne(() => PatientBackground, (patientbackground:PatientBackground) => patientbackground.patient, {cascade: true,})
-    patientbackground : PatientBackground;
+    background : PatientBackground;
 }

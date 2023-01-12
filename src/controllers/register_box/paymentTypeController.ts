@@ -1,7 +1,6 @@
-import { Currency } from "../entities/Currency";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
-import { getDataSource, AppDataSource } from "../data-source";
-import {PaymentType} from "../entities/PaymentType";
+import { getDataSource, AppDataSource } from "../../data-source";
+import {PaymentType} from "../../entities/PaymentType";
 
 const getNationalPayment = async (req: Request, res: Response, next:NextFunction) => {
 
