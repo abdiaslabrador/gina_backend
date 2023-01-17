@@ -12,6 +12,7 @@ import {OneToOne,
         BaseEntity} from "typeorm"
 
 import {PatientBackground} from "./PatientBackground"
+import {AppointmentHistory} from "./AppointmentHistory"
     
 @Entity()
 export class Patient extends BaseEntity {
@@ -51,4 +52,7 @@ export class Patient extends BaseEntity {
     
     @OneToOne(() => PatientBackground, (patientbackground:PatientBackground) => patientbackground.patient, {cascade: true,})
     background : PatientBackground;
+
+    @OneToOne(() => AppointmentHistory, (appointmentHistory:AppointmentHistory) => appointmentHistory.patient, {cascade: true,})
+    appointmentHistory : AppointmentHistory;
 }
