@@ -56,6 +56,7 @@ const getAppointments = async (req: Request, res: Response, next:NextFunction) =
         .innerJoin("appointment.appointmentHistory", "appointmentHistory")
         .innerJoin("appointmentHistory.patient", "patient")
         .where("patient.id = :id", { id: req.body.patient.id })
+        .orderBy("appointment_date", "DESC")
         .getMany();
   
         return  res.status(200).json(appointments)
@@ -67,77 +68,58 @@ const getAppointments = async (req: Request, res: Response, next:NextFunction) =
   
 }
 
-// const deletePatient = async (req: Request, res: Response, next:NextFunction) => {
+const deleteAppointment = async (req: Request, res: Response, next:NextFunction) => {
 
-//   try {
-//     const appointmentRepository = AppDataSource.getRepository(Appointment);
-//     let patient = await appointmentRepository
-//         .createQueryBuilder("patient")
-//         .innerJoinAndSelect("patient.background", "background")
-//         .where("patient.id = :id", { id: req.body.id })
-//         .getOne();
-    
-//       if(patient){
-
-//         patient.ci_rif=  alphabet_code(4) + patient.ci_rif;
-//         await appointmentRepository.save(patient);
-//         await appointmentRepository.softRemove(patient);
-
-//         return  res.status(200).json({msg: "Paciente eliminado"})
-//       }
-//       else{
-//             return res.status(404).json({msg: "Paciente no encontrado"})
-//       }
-//   } catch (error) {
-//     console.log(error)
-//     return next(error)
-//   }
-  
-// }
-
-// const updatePatient = async (req: Request, res: Response, next:NextFunction) => {
-
-//   try {
-//     const appointmentRepository = AppDataSource.getRepository(Appointment);
-//     let patient = await appointmentRepository
-//         .createQueryBuilder("patient")
-//         .innerJoinAndSelect("patient.background", "background")
-//         .where("patient.id = :id", { id: req.body.patient.id })
-//         // .where("patient.ci_rif = :ci_rif", { ci_rif: req.body.id })
-//         .getOne();
-    
-//       if(patient){
-
-//         patient.name=req.body.patient.name
-//         patient.last_name=req.body.patient.last_name
-//         patient.ci_rif=req.body.patient.ci_rif
-//         patient.sex=req.body.patient.sex
-//         patient.birthday=req.body.patient.birthday
-//         patient.phone_number=req.body.patient.phone_number
-//         patient.direction=req.body.patient.direction
-
-//         patient.background.rm=req.body.patient.background.rm
-//         patient.background.app=req.body.patient.background.app
-//         patient.background.ah=req.body.patient.background.ah
-//         patient.background.apf=req.body.patient.background.apf
-//         patient.background.habits=req.body.patient.background.habits
-//         await appointmentRepository.save(patient);
+  try {
+    const appointmentRepository = AppDataSource.getRepository(Appointment);
+    let appointment = await appointmentRepository
+        .createQueryBuilder("appointment")
+        .softDelete()
+        .where("appointment.id = :id", { id: req.body.id })
+        .andWhere("deleteAt is null")
+        .execute();
         
-//         return  res.status(200).json({msg: "Paciente actualizado"})
-//       }
-//       else{
-//             return res.status(404).json({msg: "Paciente no se encuentra"})
-//       }
-//   } catch (error) {
-//     console.log(error)
-//     return next(error)
-//   }
+        return  res.status(200).json({msg: "Consulta eliminada"})
+      
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
   
-// }
+}
+
+const updateAppointment = async (req: Request, res: Response, next:NextFunction) => {
+
+  try {
+    const appointmentRepository = AppDataSource.getRepository(Appointment);
+    let appointment = await appointmentRepository
+        .createQueryBuilder("appointment")
+        .where("appointment.id = :id", { id: req.body.appointment.id })
+        .getOne();
+        
+        if(appointment){
+          appointment.appointment_date = req.body.appointment.appointment_date
+          appointment.reason = req.body.appointment.reason
+          appointment.description = req.body.appointment.description
+  
+          await appointmentRepository.save(appointment);
+  
+          return  res.status(200).json({msg: "Consulta actualizado"})
+        }
+        else{
+              return res.status(404).json({msg: "Consulta no se encuentra"})
+        }
+      
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
+  
+}
 
 export  { 
           createAppointment,
           getAppointments, 
-          // updateAppointment,
-          // deleteAppointment, 
+          updateAppointment,
+          deleteAppointment, 
         };

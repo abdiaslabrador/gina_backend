@@ -3,8 +3,8 @@ import { check, body } from "express-validator";
 import {token_verify} from '../middlewares/token'
 import { createAppointment, 
          getAppointments,
-        //  deleteAppointment, 
-        //  updateAppointment, 
+         deleteAppointment, 
+         updateAppointment, 
        } from '../controllers/odontology/appointmentCrontroller'
 
 const appointmentRouter = express.Router();
@@ -21,11 +21,17 @@ appointmentRouter.post(
   getAppointments
 );
 
-// appointmentRouter.post(
-//   "/delete",
-//   token_verify,
-//   deleteAppointment
-// );
+appointmentRouter.post(
+  "/update",
+  token_verify,
+  updateAppointment
+);
+
+appointmentRouter.post(
+  "/delete",
+  token_verify,
+  deleteAppointment
+);
 
 // appointmentRouter.post(
 //   "/update",
