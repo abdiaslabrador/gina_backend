@@ -13,6 +13,7 @@ import {OneToOne,
 
 import {PatientBackground} from "./PatientBackground"
 import {AppointmentHistory} from "./AppointmentHistory"
+import {Odontograma} from "./Odontograma"
     
 @Entity()
 export class Patient extends BaseEntity {
@@ -55,4 +56,7 @@ export class Patient extends BaseEntity {
 
     @OneToOne(() => AppointmentHistory, (appointmentHistory:AppointmentHistory) => appointmentHistory.patient, {cascade: true,})
     appointmentHistory : AppointmentHistory;
+
+    @OneToOne(() => Odontograma, (odontograma:Odontograma) => odontograma.patient, {cascade: true,})
+    odontograma : Odontograma;
 }
