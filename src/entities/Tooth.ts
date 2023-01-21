@@ -29,26 +29,26 @@ e: string
 @Column({nullable:true})
 m: string
 
+@Column({default:false})
+question: boolean
+
 @Column({nullable:true})
 line: string
 
 @Column({nullable:true})
-question: string
-
-@Column({nullable:true})
-x: string
+circle: string
 
 @Column({nullable:true})
 ring: string
 
 @Column({nullable:true})
-circle: string
+x: string
 
 @ManyToOne(() => Odontograma, (odontograma:Odontograma) => odontograma.teeth, {onDelete: 'CASCADE'})
 odontograma: Odontograma
 
-@OneToMany(() => ToothParts, (toothParts:ToothParts) => toothParts.tooth, { cascade: true })
-toothParts: ToothParts[]
+@OneToOne(() => ToothParts, (toothParts:ToothParts) => toothParts.tooth, {cascade: true,})
+toothParts : ToothParts;
 
 @CreateDateColumn()
 createdAt: Date

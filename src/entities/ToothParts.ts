@@ -18,13 +18,23 @@ export class ToothParts{
 @PrimaryGeneratedColumn()
 id:number
 
-@Column()
-number:number
+@Column({nullable:true})
+one: string
 
 @Column({nullable:true})
-point: string
+two: string
 
-@ManyToOne(() => Tooth, (tooth) => tooth.toothParts, {onDelete: 'CASCADE'})
+@Column({nullable:true})
+three: string
+
+@Column({nullable:true})
+four: string
+
+@Column({nullable:true})
+five: string
+
+@OneToOne(() => Tooth, (tooth:Tooth)=>tooth.toothParts, {onDelete: 'CASCADE'})
+@JoinColumn()
 tooth: Tooth
 
 @CreateDateColumn()
