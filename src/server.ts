@@ -18,6 +18,7 @@ import paymentTypeRouter from './routers/paymentTypeRouter'
 import documentRouter from './routers/documentRouter'
 import patientRouter from './routers/patientRouter'
 import appointmentRouter from './routers/appointmentRouter'
+import odontogramaRouter from './routers/odontogramaRouter'
 
 import cookieParser from 'cookie-parser'
 
@@ -40,6 +41,7 @@ app.use('/api/paymenttype', paymentTypeRouter)
 app.use('/api/document', documentRouter)
 app.use('/api/patient', patientRouter)
 app.use('/api/appointment', appointmentRouter)
+app.use('/api/odontograma', odontogramaRouter)
 
 
 // const { sign, decode, verify } = jsonwebtoken;  

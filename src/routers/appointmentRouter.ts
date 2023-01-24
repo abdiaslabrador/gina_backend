@@ -5,7 +5,7 @@ import { createAppointment,
          getAppointments,
          deleteAppointment, 
          updateAppointment, 
-       } from '../controllers/odontology/appointmentCrontroller'
+       } from '../controllers/odontology/appointmentController'
 
 const appointmentRouter = express.Router();
 
