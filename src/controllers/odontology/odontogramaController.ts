@@ -27,48 +27,65 @@ const getThee = async (req: Request, res: Response, next:NextFunction) => {
   }
 }
 
-// const createAppointment = async (req: Request, res: Response, next:NextFunction) => {
-//     try {
-//       await AppDataSource.transaction(async (transactionalEntityManager) => {
+const createOrUpdateTooth = async (req: Request, res: Response, next:NextFunction) => {
+    try {
+      await AppDataSource.transaction(async (transactionalEntityManager) => {
 
-//       const appointmentRepository = AppDataSource.getRepository(Appointment);
-//       const appointmentHistoryRepository = AppDataSource.getRepository(AppointmentHistory);
-//       let appointmentHistory = await appointmentHistoryRepository
-//               .createQueryBuilder("aptHistory")
-//               .innerJoin("aptHistory.patient", "patient")
-//               .where("patient.id = :id", { id: req.body.patient.id })
-//               .getOne();
-
-//       if(appointmentHistory){
-//         const appointment = new Appointment();
-//         appointment.appointment_date=  req.body.appointment.today_date;
-//         appointment.reason=  req.body.appointment.reason;
-//         appointment.description= req.body.appointment.description;
-//         appointment.appointmentHistory = appointmentHistory;
-//         await appointmentRepository.save(appointment);
-//       }
-//       else{
-//         appointmentHistory = new AppointmentHistory();
-//         appointmentHistory.patient = {id : req.body.patient.id} as Patient;
+        const toothRepository = AppDataSource.getRepository(Tooth);
+        const odontogramaRepository = AppDataSource.getRepository(Odontograma);
         
-//         const appointment = new Appointment();
-//         appointment.appointment_date=  req.body.appointment.today_date;
-//         appointment.reason=  req.body.appointment.reason;
-//         appointment.description= req.body.appointment.description;
-//         appointment.appointmentHistory = appointmentHistory;
+        let odont = await odontogramaRepository
+          .createQueryBuilder("odont")
+          .innerJoin("odont.patient", "patient")
+          .where("patient.id = :id", { id: req.body.patient.id })
+          .getOne();
 
-//         await appointmentHistoryRepository.save(appointmentHistory);
-//         await appointmentRepository.save(appointment);
+        if(odont){
+            let tooth = await toothRepository
+            .createQueryBuilder("tooth")
+            .leftJoinAndSelect("tooth.toothParts", "tooth.toothParts")
+            .innerJoin("tooth.odontograma", "odontograma")
+            .where("odontograma.id = :id", { id: odont.id })
+            .andWhere("tooth.number = :tooth_number", { tooth_number: req.body.tooth?.number })
+            .getOne();
 
-//       }
-//       })
-//       return  res.status(200).json({msg: "Consulta creada exitosamente"})
+            if(tooth){
+              tooth.e=req.body.tooth?.e;
+              tooth.m=req.body.tooth?.m;
+              tooth.question=req.body.tooth?.question;
+              tooth.line=req.body.tooth?.line;
+              tooth.circle=req.body.tooth?.circle;
+              tooth.ring=req.body.tooth?.ring;
+              tooth.x=req.body.tooth?.x;
+              if(!tooth.toothParts){
+                tooth.toothParts=req.body.tooth?.toothParts;
+              }else{
+                tooth.toothParts.one = req.body.tooth?.toothParts?.one
+                tooth.toothParts.two = req.body.tooth?.toothParts?.two
+                tooth.toothParts.three = req.body.tooth?.toothParts?.three
+                tooth.toothParts.four = req.body.tooth?.toothParts?.four
+                tooth.toothParts.five = req.body.tooth?.toothParts?.five
+              }
+              
+              await toothRepository.save(tooth)
+              return  res.status(200).json({msg: "Diente actualizado"})
+            }
+
+        }else{
+          odont = new Odontograma();
+          odont.patient = {id : req.body.patient.id } as Patient;
+          odontogramaRepository.save(odont);
+        }
+        req.body.tooth.odontograma = odont;
+        await toothRepository.save(req.body.tooth)
+        return  res.status(200).json({msg: "Diente creado"})
+      })
      
-//     } catch (error) {
-//       console.log(error)
-//       return next(error)
-//     }
-// }
+    } catch (error) {
+      console.log(error)
+      return next(error)
+    }
+}
 
 // const deleteAppointment = async (req: Request, res: Response, next:NextFunction) => {
 
@@ -121,7 +138,7 @@ const getThee = async (req: Request, res: Response, next:NextFunction) => {
 
 export  { 
           getThee, 
-        //   createAppointment,
+          createOrUpdateTooth,
         //   updateAppointment,
         //   deleteAppointment, 
         };
