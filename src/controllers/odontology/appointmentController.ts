@@ -104,7 +104,7 @@ const updateAppointment = async (req: Request, res: Response, next:NextFunction)
   
           await appointmentRepository.save(appointment);
   
-          return  res.status(200).json({msg: "Consulta actualizado"})
+          return  res.status(200).json({msg: "Consulta actualizada"})
         }
         else{
               return res.status(404).json({msg: "Consulta no se encuentra"})

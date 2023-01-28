@@ -119,7 +119,7 @@ const getPatientByBirthday = async (req: Request, res: Response, next:NextFuncti
       const patient = await AppDataSource
       .createQueryBuilder(Patient, "patient")
       .innerJoinAndSelect("patient.background", "background")
-      .where(`DATE_TRUNC('day', patient.birthday) >= '${req.body.birthday}'`)
+      .where(`DATE_TRUNC('day', patient.birthday) = '${req.body.birthday}'`)
       .getMany();
 
       return  res.status(200).json(patient)
@@ -168,35 +168,35 @@ const getPatientByNames = async (req: Request, res: Response, next:NextFunction)
   }
 }
 
-// const getPatientByCiUpdate = async (req: Request, res: Response, next:NextFunction) => {
+const getPatientByCiUpdate = async (req: Request, res: Response, next:NextFunction) => {
 
-//   try {
-//     const patientRepository = AppDataSource.getRepository(Patient);
-//     let patient = await patientRepository
-//         .createQueryBuilder("patient")
-//         .where("patient.ci_rif = :look_ci_rif", { look_ci_rif: req.body.look_ci_rif })
-//         .andWhere("patient.ci_rif != :ci_rif", { ci_rif: req.body.ci_rif })
-//         .getOne();
+  try {
+    const patientRepository = AppDataSource.getRepository(Patient);
+    let patient = await patientRepository
+        .createQueryBuilder("patient")
+        .where("patient.ci_rif = :look_ci_rif", { look_ci_rif: req.body.look_ci_rif })
+        .andWhere("patient.ci_rif != :ci_rif", { ci_rif: req.body.ci_rif })
+        .getOne();
     
-//       if(patient){
-//         return  res.status(200).json(patient)
-//       }
-//       else{
-//         return res.status(404).json({msg: "Paciente no encontrado"})
-//       }
-//   } catch (error) {
-//     console.log(error)
-//     return next(error)
-//   }
-// }
+      if(patient){
+        return  res.status(200).json(patient)
+      }
+      else{
+        return res.status(404).json({msg: "Paciente no encontrado"})
+      }
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
+}
 
 
 export  { createPatient, 
           updatePatient,
-         deletePatient, 
-        getPatientByCi,
-        getPatientByNames, 
-         getPatientByBirthday,
-        //  getPatientByCiUpdate,
+          deletePatient, 
+          getPatientByCi,
+          getPatientByNames, 
+          getPatientByBirthday,
+          getPatientByCiUpdate,
         
         };

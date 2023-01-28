@@ -7,7 +7,7 @@ import { createPatient,
         getPatientByCi,
         getPatientByNames,
         getPatientByBirthday,
-        //  getPatientByEmail, getPatientByCiUpdate, getPatientByEmailUpdate
+        getPatientByCiUpdate,
        } from '../controllers/odontology/patientController'
 
 const patientRouter = express.Router();
@@ -47,20 +47,11 @@ patientRouter.post( //este se ultiliza para pregunta si ya la cédula existe al 
   token_verify,
   getPatientByCi
 );
-// patientRouter.post(
-//   "/getbyemail",   //este se ultiliza para pregunta si ya la cédula existe al momento de crear un usuario en el front
-//   token_verify,
-//   getPatientByEmail
-// );
-// patientRouter.post(
-//   "/getbyciupdate", //ese se ultiliza para pregunta si ya la cédula existe al momento de actualizar un usuario en el front
-//   token_verify,
-//   getPatientByCiUpdate
-// );
-// patientRouter.post(
-//   "/getbyemailupdate", //ese se ultiliza para pregunta si ya la cédula existe al momento de actualizar un usuario en el front
-//   token_verify,
-//   getPatientByEmailUpdate
-// );
+patientRouter.post(
+  "/getbyciupdate", //ese se ultiliza para pregunta si ya la cédula existe al momento de actualizar un usuario en el front
+  token_verify,
+  getPatientByCiUpdate
+);
+
 
 export default patientRouter;
