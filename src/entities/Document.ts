@@ -43,6 +43,9 @@ total_payed:number
 @Column("decimal", { precision: 12, scale: 2 })
 change:number
 
+@Column({type:"boolean", default: false })
+canceled:boolean
+
 @ManyToOne(() => Client, (client) => client.documents, {onDelete: 'CASCADE'})
 client: Client
 

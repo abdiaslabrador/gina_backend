@@ -32,7 +32,7 @@ currency_amount:number
 @Column("decimal", { precision: 12, scale: 2 })
 amount:number
 
-@Column({type:"text"})
+@Column({type:"text", nullable:true})
 detail: string;
 
 @ManyToOne(() => Document, (document) => document.docu_payments, {onDelete: 'CASCADE'})

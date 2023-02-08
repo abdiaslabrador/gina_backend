@@ -27,6 +27,9 @@ reason:string
 @Column({type:"text", nullable:true})
 description:string
 
+@ManyToOne(() => AppointmentHistory, (appointmentHistory) => appointmentHistory.appointments, {onDelete: 'CASCADE'})
+appointmentHistory: AppointmentHistory
+
 @CreateDateColumn()
 createdAt: Date
 
@@ -35,7 +38,4 @@ updateAt: Date
 
 @DeleteDateColumn()
 deleteAt: Date
-
-@ManyToOne(() => AppointmentHistory, (appointmentHistory) => appointmentHistory.appointments, {onDelete: 'CASCADE'})
-appointmentHistory: AppointmentHistory
 }

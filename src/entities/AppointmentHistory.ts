@@ -19,6 +19,13 @@ export class AppointmentHistory{
 @PrimaryGeneratedColumn()
 id:number
 
+@OneToMany(() => Appointment, (appointment:Appointment)=>appointment.appointmentHistory, {cascade: true})
+appointments: Appointment[]
+
+@OneToOne(() => Patient, (patient:Patient)=>patient.appointmentHistory, {onDelete: 'CASCADE'})
+@JoinColumn()
+patient: Patient
+
 @CreateDateColumn()
 createdAt: Date
 
@@ -27,11 +34,4 @@ updateAt: Date
 
 @DeleteDateColumn()
 deleteAt: Date
-
-@OneToMany(() => Appointment, (appointment:Appointment)=>appointment.appointmentHistory, {cascade: true})
-appointments: Appointment[]
-
-@OneToOne(() => Patient, (patient:Patient)=>patient.appointmentHistory, {onDelete: 'CASCADE'})
-@JoinColumn()
-patient: Patient
 }

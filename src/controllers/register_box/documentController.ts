@@ -150,8 +150,33 @@ const createBill = async (req: Request, res: Response, next:NextFunction) => {
     
 }
 
+const cancelBill = async (req: Request, res: Response, next:NextFunction) => {
+
+  try {
+    await AppDataSource.transaction(async (transactionalEntityManager) => {
+      const documentRepository = await transactionalEntityManager.getRepository(Document);
+      const docu = await documentRepository
+      .createQueryBuilder("document")
+      .innerJoin("document.docu_bill", "docu_bill")
+      .where("docu_bill.id = :id", {id: req.body.id})
+      .getOne();
+
+      if(docu){
+        docu.canceled = true;
+        documentRepository.save(docu);
+        return  res.status(200).json({msg: "Factura actualizado"})
+      }
+      else
+        return  res.status(404).json({msg: "Factura no encontrada"})
+    })
+      
+  } catch (error) {
+    console.log(error)
+    return next(error)
+  }
+}
 
 export  {
-            createBill, getBillById, getBillByDate
-            
+            createBill, getBillById, getBillByDate,
+            cancelBill
         };

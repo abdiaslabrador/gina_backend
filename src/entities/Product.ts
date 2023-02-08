@@ -17,7 +17,7 @@ export class Product extends BaseEntity {
     @Column({length:10})
     code:string;
 
-    @Column()
+    @Column({default: 0})
     cant: number;
 
     @Column({type:"text"})

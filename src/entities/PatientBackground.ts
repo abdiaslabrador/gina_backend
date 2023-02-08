@@ -36,6 +36,10 @@ habits:string
 @Column({default:false, nullable:true})
 need_child_edentigrama:boolean
 
+@OneToOne(() => Patient, (patient:Patient)=>patient.background, {onDelete: 'CASCADE'})
+@JoinColumn()
+patient: Patient
+
 @CreateDateColumn()
 createdAt: Date
 
@@ -44,8 +48,4 @@ updateAt: Date
 
 @DeleteDateColumn()
 deleteAt: Date
-
-@OneToOne(() => Patient, (patient:Patient)=>patient.background, {onDelete: 'CASCADE'})
-@JoinColumn()
-patient: Patient
 }

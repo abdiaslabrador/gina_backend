@@ -42,15 +42,6 @@ export class Patient extends BaseEntity {
     @Column({type:"text", nullable:true})
     direction:string
     
-    @CreateDateColumn()
-    createdAt: Date
-
-    @UpdateDateColumn()
-    updateAt: Date
-
-    @DeleteDateColumn()
-    deleteAt: Date
-    
     @OneToOne(() => PatientBackground, (patientbackground:PatientBackground) => patientbackground.patient, {cascade: true,})
     background : PatientBackground;
 
@@ -59,4 +50,13 @@ export class Patient extends BaseEntity {
 
     @OneToOne(() => Odontograma, (odontograma:Odontograma) => odontograma.patient, {cascade: true,})
     odontograma : Odontograma;
+
+    @CreateDateColumn()
+    createdAt: Date
+
+    @UpdateDateColumn()
+    updateAt: Date
+
+    @DeleteDateColumn()
+    deleteAt: Date
 }
