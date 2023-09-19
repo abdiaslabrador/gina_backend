@@ -34,21 +34,25 @@ const createOrUpdateTooth = async (req: Request, res: Response, next:NextFunctio
         const toothRepository = AppDataSource.getRepository(Tooth);
         const odontogramaRepository = AppDataSource.getRepository(Odontograma);
         
+        //Obtengo el id del odontograma
         let odont = await odontogramaRepository
           .createQueryBuilder("odont")
           .innerJoin("odont.patient", "patient")
           .where("patient.id = :id", { id: req.body.patient.id })
           .getOne();
 
+          
+       
         if(odont){
-            let tooth = await toothRepository
-            .createQueryBuilder("tooth")
-            .leftJoinAndSelect("tooth.toothParts", "tooth.toothParts")
-            .innerJoin("tooth.odontograma", "odontograma")
-            .where("odontograma.id = :id", { id: odont.id })
-            .andWhere("tooth.number = :tooth_number", { tooth_number: req.body.tooth?.number })
-            .getOne();
+          let tooth = await toothRepository
+          .createQueryBuilder("tooth")
+          .leftJoinAndSelect("tooth.toothParts", "toothParts")
+          .innerJoin("tooth.odontograma", "odontograma")
+          .where("odontograma.id = :id", { id: odont.id })
+          .andWhere("tooth.number = :tooth_number", { tooth_number: req.body.tooth?.number })
+          .getOne();
 
+        
             if(tooth){
               tooth.e=req.body.tooth?.e;
               tooth.m=req.body.tooth?.m;
