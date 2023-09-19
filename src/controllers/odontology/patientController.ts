@@ -152,6 +152,7 @@ const getPatientByCi = async (req: Request, res: Response, next:NextFunction) =>
 
 const getPatientByNames = async (req: Request, res: Response, next:NextFunction) => {
   try {
+    //recordar activar el unaccent en la base de datos
     const patientRepository = AppDataSource.getRepository(Patient);
     let patient = await patientRepository
         .createQueryBuilder("patient")
