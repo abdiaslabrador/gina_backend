@@ -12,7 +12,8 @@ const getThee = async (req: Request, res: Response, next:NextFunction) => {
         const toothRepository = AppDataSource.getRepository(Tooth);
         let teeth = await toothRepository
         .createQueryBuilder("teeth")
-        .leftJoinAndSelect("teeth.toothParts", "toothParts")
+        // .leftJoinAndSelect("teeth.toothParts", "toothParts")
+        .innerJoinAndSelect("teeth.toothParts", "toothParts")
         .innerJoin("teeth.odontograma", "odontograma")
         .innerJoin("odontograma.patient", "patient")
         .where("patient.id = :id", { id: req.body.patient.id })
@@ -46,7 +47,8 @@ const createOrUpdateTooth = async (req: Request, res: Response, next:NextFunctio
         if(odont){
           let tooth = await toothRepository
           .createQueryBuilder("tooth")
-          .leftJoinAndSelect("tooth.toothParts", "toothParts")
+          // .leftJoinAndSelect("tooth.toothParts", "toothParts")
+          .innerJoinAndSelect("tooth.toothParts", "toothParts")
           .innerJoin("tooth.odontograma", "odontograma")
           .where("odontograma.id = :id", { id: odont.id })
           .andWhere("tooth.number = :tooth_number", { tooth_number: req.body.tooth?.number })
@@ -91,58 +93,7 @@ const createOrUpdateTooth = async (req: Request, res: Response, next:NextFunctio
     }
 }
 
-// const deleteAppointment = async (req: Request, res: Response, next:NextFunction) => {
-
-//   try {
-//     const appointmentRepository = AppDataSource.getRepository(Appointment);
-//     let appointment = await appointmentRepository
-//         .createQueryBuilder("appointment")
-//         .softDelete()
-//         .where("appointment.id = :id", { id: req.body.id })
-//         .andWhere("deleteAt is null")
-//         .execute();
-        
-//         return  res.status(200).json({msg: "Consulta eliminada"})
-      
-//   } catch (error) {
-//     console.log(error)
-//     return next(error)
-//   }
-  
-// }
-
-// const updateAppointment = async (req: Request, res: Response, next:NextFunction) => {
-
-//   try {
-//     const appointmentRepository = AppDataSource.getRepository(Appointment);
-//     let appointment = await appointmentRepository
-//         .createQueryBuilder("appointment")
-//         .where("appointment.id = :id", { id: req.body.appointment.id })
-//         .getOne();
-        
-//         if(appointment){
-//           appointment.appointment_date = req.body.appointment.appointment_date
-//           appointment.reason = req.body.appointment.reason
-//           appointment.description = req.body.appointment.description
-  
-//           await appointmentRepository.save(appointment);
-  
-//           return  res.status(200).json({msg: "Consulta actualizado"})
-//         }
-//         else{
-//               return res.status(404).json({msg: "Consulta no se encuentra"})
-//         }
-      
-//   } catch (error) {
-//     console.log(error)
-//     return next(error)
-//   }
-  
-// }
-
 export  { 
           getThee, 
           createOrUpdateTooth,
-        //   updateAppointment,
-        //   deleteAppointment, 
         };
