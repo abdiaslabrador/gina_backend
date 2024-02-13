@@ -6,7 +6,7 @@ import { getDataSource, AppDataSource } from "../data-source";
 import { entriesValidatorHelper } from "../helpers/validators";
 import { validationResult } from "express-validator";
 import { UserInf } from "../interfaces/user";
-
+import { CustomRequest } from "../custom_type";
 const { sign, decode, verify } = jsonwebtoken;
 
 const authentication = async (
@@ -56,7 +56,7 @@ const authentication = async (
 };
 
 const userAuthenticated = async (
-  req: Request,
+  req: CustomRequest,
   res: Response,
   next: NextFunction
 ) => {

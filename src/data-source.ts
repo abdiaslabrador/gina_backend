@@ -13,9 +13,10 @@ export const AppDataSource = new DataSource({
     entities: ["dist/entities/**/*.js"],
     migrations: ["dist/migrations/**/*.js"],
     subscribers: ["dist/subscribers/**/*.js"],
-    
-    
 })
+// entities: ["src/entities/**/*.ts"],
+// migrations: ["src/migrations/**/*.ts"],
+// subscribers: ["src/subscribers/**/*.ts"],
 
 export const getDataSource = (): Promise<DataSource> => {
    if (AppDataSource.isInitialized){

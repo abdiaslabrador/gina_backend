@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import jsonwebtoken from "jsonwebtoken";
+import { CustomRequest } from "../custom_type";
 
 const { sign, decode, verify } = jsonwebtoken;
 
 
-function token_verify(req: Request, res: Response, next: NextFunction): void {
+function token_verify(req: CustomRequest, res: Response, next: NextFunction): void {
     /**
      * verficamos que el string que viene en el header sea un token
      */

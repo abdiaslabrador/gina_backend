@@ -3,6 +3,7 @@ import { alphabet_code } from "../../helpers/codeGenerator";
 import bcrypt  from "bcrypt";
 import { Request, Response, NextFunction, ErrorRequestHandler } from "express";
 import { getDataSource, AppDataSource } from "../../data-source";
+import { CustomRequest } from "../../custom_type";
 
 const createEmployee = async (req: Request, res: Response, next:NextFunction) => {
 
@@ -45,7 +46,7 @@ const createEmployee = async (req: Request, res: Response, next:NextFunction) =>
     
 }
 
-const deleteEmployee = async (req: Request, res: Response, next:NextFunction) => {
+const deleteEmployee = async (req: CustomRequest, res: Response, next:NextFunction) => {
 
   try {
     const employeeRepository = AppDataSource.getRepository(Employee);
@@ -160,7 +161,7 @@ const updateEmployeePassword = async (req: Request, res: Response, next:NextFunc
   
 }
 
-const allEmployee = async (req: Request, res: Response, next:NextFunction) => {
+const allEmployee = async (req: CustomRequest, res: Response, next:NextFunction) => {
 
   try {
     const employeeRepository = AppDataSource.getRepository(Employee);
