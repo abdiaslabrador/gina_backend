@@ -17,7 +17,7 @@ export const AppDataSource = new DataSource({
 // entities: ["src/entities/**/*.ts"],
 // migrations: ["src/migrations/**/*.ts"],
 // subscribers: ["src/subscribers/**/*.ts"],
-
+// npm run typeorm_src migration:generate src/migrations/nameOfMyMigration
 export const getDataSource = (): Promise<DataSource> => {
    if (AppDataSource.isInitialized){
     console.log("ya fue inicializado")
